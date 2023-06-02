@@ -50,3 +50,7 @@ builder.stream(“widgets”, Consumed.with(stringSerde, widgetsSerde))
     .filter((key, widget) -> widget.getColour.equals("red"))
     .to("widgets-red", Produced.with(stringSerde, widgetsSerde));
 ```
+
+- 终于用Con.io的免费云跑起来了
+
+<img width="460" alt="image" src="https://github.com/szy0syz/kafka-stream-2023/assets/10555820/18eb319d-185f-424a-a886-d9bbb290bb65">
