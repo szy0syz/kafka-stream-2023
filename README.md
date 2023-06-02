@@ -25,3 +25,28 @@
 21. Internals
 22. Stateful Fault Tolerance
 23. Interactive Queries
+
+![image](https://github.com/szy0syz/kafka-stream-2023/assets/10555820/376f914a-f729-4434-b65f-305a4a13a5d2)
+
+## 没有对比就没有伤害
+
+```java
+public static void main(String[] args) {
+ try(Consumer<String, Widget> consumer = new KafkaConsumer<>(consumerProperties());
+    Producer<String, Widget> producer = new KafkaProducer<>(producerProperties())) {
+        consumer.subscribe(Collections.singletonList("widgets"));
+        while (true) {
+            ConsumerRecords<String, Widget> records =    consumer.poll(Duration.ofSeconds(5));
+                for (ConsumerRecord<String, Widget> record : records) {
+                    Widget widget = record.value();
+                    if (widget.getColour().equals("red") {
+                        ProducerRecord<String, Widget> producerRecord = new ProducerRecord<>("widgets-red", record.key(), widget);
+                        producer.send(producerRecord, (metadata, exception)-> {…….} );
+```
+
+```java
+final StreamsBuilder builder = new StreamsBuilder();
+builder.stream(“widgets”, Consumed.with(stringSerde, widgetsSerde))
+    .filter((key, widget) -> widget.getColour.equals("red"))
+    .to("widgets-red", Produced.with(stringSerde, widgetsSerde));
+```
